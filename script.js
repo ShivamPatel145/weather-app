@@ -1,29 +1,10 @@
 // Configuration
-let CONFIG = {
-    API_KEY: null, // Will be fetched from Vercel API
+const CONFIG = {
+    API_KEY: "5c7b3b33abe0c161bad73653d12ddda9",
     API_URL: "https://api.openweathermap.org/data/2.5/weather",
     DEFAULT_UNITS: "metric",
     DEBOUNCE_DELAY: 300, // ms
 };
-
-// Function to get API key from Vercel environment
-async function loadApiKey() {
-    try {
-        const response = await fetch('/api/config');
-        if (response.ok) {
-            const data = await response.json();
-            CONFIG.API_KEY = data.apiKey;
-        } else {
-            // Fallback for local development
-            CONFIG.API_KEY = "YOUR_API_KEY_HERE";
-            console.warn('Using fallback API key. Set WEATHER_API_KEY in Vercel environment variables.');
-        }
-    } catch (error) {
-        // Fallback for local development
-        CONFIG.API_KEY = "YOUR_API_KEY_HERE";
-        console.warn('Failed to load API key from server, using fallback.');
-    }
-}
 
 // Add these new configurations
 Object.assign(CONFIG, {
@@ -153,11 +134,6 @@ const setLoading = (isLoading) => {
 
 // Enhanced weather checking function
 async function checkWeather(city, retryCount = 0) {
-    // Ensure API key is loaded
-    if (!CONFIG.API_KEY) {
-        await loadApiKey();
-    }
-
     // Sanitize input - remove extra spaces and trim
     const sanitizedCity = city.replace(/\s+/g, ' ').trim();
     
@@ -271,10 +247,4 @@ window.addEventListener('offline', () => {
 });
 
 // Initialize the app
-async function initApp() {
-    await loadApiKey();
-    elements.searchBox.focus();
-}
-
-// Start the app
-initApp();
+elements.searchBox.focus();

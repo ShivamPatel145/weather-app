@@ -39,7 +39,16 @@
         </div>
     </div>
     <div class="alert-container"></div>
-    <script src="config.js"></script>
+    <script>
+        // Check if config.js is available (for local development)
+        // This will be skipped in production if config.js doesn't exist
+        const script = document.createElement('script');
+        script.src = 'config.js';
+        script.onerror = function() {
+            console.log('config.js not found - using environment variables or prompting user');
+        };
+        document.head.appendChild(script);
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

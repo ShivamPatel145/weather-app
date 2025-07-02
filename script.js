@@ -1,10 +1,42 @@
 // Configuration
-const CONFIG = {
-    API_KEY: ENV_CONFIG.API_KEY, // Get API key from config.js
+let CONFIG = {
+    API_KEY: null,
     API_URL: "https://api.openweathermap.org/data/2.5/weather",
     DEFAULT_UNITS: "metric",
     DEBOUNCE_DELAY: 300, // ms
 };
+
+// Function to get API key from server or config
+async function initializeConfig() {
+    try {
+        // Try to get API key from server endpoint (for production)
+        const response = await fetch('/api/config');
+        if (response.ok) {
+            const serverConfig = await response.json();
+            if (serverConfig.API_KEY && serverConfig.API_KEY !== 'your-api-key-here') {
+                CONFIG.API_KEY = serverConfig.API_KEY;
+                return;
+            }
+        }
+    } catch (error) {
+        console.log('Server config not available, trying local config...');
+    }
+    
+    // Fallback to local config (for development)
+    if (typeof ENV_CONFIG !== 'undefined' && ENV_CONFIG.API_KEY && ENV_CONFIG.API_KEY !== 'your-api-key-here') {
+        CONFIG.API_KEY = ENV_CONFIG.API_KEY;
+        return;
+    }
+    
+    // Last resort: prompt user
+    const apiKey = prompt('Please enter your OpenWeatherMap API key:');
+    if (apiKey) {
+        CONFIG.API_KEY = apiKey;
+        return;
+    }
+    
+    throw new Error('API key is required. Please set WEATHER_API_KEY environment variable or configure config.js');
+}
 
 // Add these new configurations
 Object.assign(CONFIG, {
@@ -247,4 +279,20 @@ window.addEventListener('offline', () => {
 });
 
 // Initialize the app
-elements.searchBox.focus();
+async function initApp() {
+    try {
+        await initializeConfig();
+        elements.searchBox.focus();
+        console.log('Weather app initialized successfully');
+    } catch (error) {
+        console.error('Failed to initialize app:', error);
+        showAlert('Failed to initialize app: ' + error.message, 'error');
+    }
+}
+
+// Start the app when DOM is loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}

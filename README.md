@@ -33,9 +33,28 @@ A simple weather application that allows users to search for the current weather
 
 ## Environment Setup
 
+### Local Development
+
 - The API key is stored in `config.js` (not tracked by Git for security)
 - Never commit your actual API key to version control
 - The `.gitignore` file prevents accidental commits of sensitive data
+
+### Production Deployment (Vercel)
+
+1. Set the environment variable `WEATHER_API_KEY` in your Vercel dashboard
+2. The app will automatically use the environment variable in production
+3. No additional configuration needed
+
+## Deployment
+
+### Deploy to Vercel
+
+1. Fork/clone this repository
+2. Connect your GitHub repository to Vercel
+3. Set the environment variable:
+   - Variable name: `WEATHER_API_KEY`
+   - Value: Your OpenWeatherMap API key
+4. Deploy!
 
 ## Folder Structure
 
@@ -44,6 +63,9 @@ index.html
 script.js
 style.css
 config.sample.js
+server.js
+package.json
+vercel.json
 images/
     clear.png
     clouds.png

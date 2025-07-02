@@ -1,0 +1,17 @@
+{
+  "name": "weather-app",
+  "version": "1.0.0",
+  "description": "A simple weather application",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000",
+    "dev": "live-server --port=3000 --watch=.",
+    "build": "echo 'No build process configured'"
+  },
+  "keywords": ["weather", "api", "javascript", "html", "css"],
+  "author": "ShivamPatel145",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

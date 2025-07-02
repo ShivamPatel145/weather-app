@@ -1,6 +1,6 @@
 // Configuration
 const CONFIG = {
-    API_KEY: "5c7b3b33abe0c161bad73653d12ddda9",
+    API_KEY: ENV_CONFIG.API_KEY, // Get API key from config.js
     API_URL: "https://api.openweathermap.org/data/2.5/weather",
     DEFAULT_UNITS: "metric",
     DEBOUNCE_DELAY: 300, // ms
